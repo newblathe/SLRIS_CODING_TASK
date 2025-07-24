@@ -1,0 +1,14 @@
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Pytest cache files
+.pytest_cache
+
+# Environment variables
+.env
+
+#vscode_cache
+.vscode/
