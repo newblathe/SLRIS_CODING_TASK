@@ -45,7 +45,7 @@ def parse_pdf(file_path: str) -> List[Dict]:
                     "text": text.strip(),
                     "source_file": base_name,
                     "page": page_num,
-                    "type": "text"
+                    "type": "pdf_text"
                 })
 
             # Extract tables separately
@@ -56,7 +56,7 @@ def parse_pdf(file_path: str) -> List[Dict]:
                         "text": row_data,
                         "source_file": base_name,
                         "page": page_num,
-                        "table": table_num,
+                        "table": table_num + 1,
                         "row": row_index + 1,
                         "type": "table_row"
                     })
@@ -112,7 +112,7 @@ def parse_pptx(file_path: str) -> List[Dict]:
                             "type": "table_row"
                         })
                 except Exception as e:
-                    print(f"⚠️ Error processing table on slide {i+1}: {e}")
+                    print(f"Error processing table on slide {i+1}: {e}")
 
         if slide_text_parts:
             results.append({
@@ -137,7 +137,7 @@ def parse_docx(file_path: str) -> List[Dict]:
                 "text": text,
                 "source_file": base_name,
                 "paragraph": i,
-                "type": "text"
+                "type": "docx_paragraph"
             })
 
     # Extract tables into KV format
@@ -154,7 +154,7 @@ def parse_docx(file_path: str) -> List[Dict]:
             results.append({
                 "text": row_data,
                 "source_file": base_name,
-                "table": table_num,
+                "table": table_num + 1,
                 "row": row_index + 1,
                 "type": "table_row"
             })
@@ -186,13 +186,12 @@ def table_to_kv_chunks(df: pd.DataFrame) -> List[str]:
     for _, row in df.iterrows():
         kv_pairs = []
         for col in df.columns:
-            if not col.strip().startswith("Unnamed: "):
-                kv_pairs.append(f"{col.strip()}: {str(row[col]).strip()}")
+            col_name = str(col).strip() if col is not None else ""
+            cell_value = str(row[col]).strip() if row[col] else ""
+
+            if not col_name.startswith("Unnamed:"):
+                kv_pairs.append(f"{col_name}: {cell_value}")
             else:
-                kv_pairs.append(f"{str(row[col]).strip()}")
+                kv_pairs.append(f"{cell_value}")
         row_data.append("; ".join(kv_pairs))
-
     return row_data
-chunks = parse_docx("sample_doc_with_table.docx")
-
-print(chunks)

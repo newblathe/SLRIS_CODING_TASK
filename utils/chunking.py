@@ -1,7 +1,8 @@
 import nltk
 from nltk.tokenize import sent_tokenize
 from typing import List, Dict
-from file_parser import parse_file
+from utils.file_parser import parse_file
+import os
 nltk.download("punkt")
 
 def chunk_text_data(parsed_data: List[Dict]) -> List[Dict]:
