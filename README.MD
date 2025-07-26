@@ -1,4 +1,4 @@
-# Agent-Based Document Q&A System
+# Agentic RAG Chatbot
 
 This project implements a modular agent-based pipeline for intelligent document understanding and question-answering. It supports PDF, DOCX, PPTX, CSV, and TXT/MD ingestion with persistent vector storage using ChromaDB, and returns grounded answers using LLMs via MCP (Model Communication Protocol).
 
