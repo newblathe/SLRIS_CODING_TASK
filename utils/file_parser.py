@@ -5,22 +5,44 @@ import pandas as pd
 import os
 from typing import List, Dict
 
+
 def parse_file(file_path: str) -> List[Dict]:
+    """
+    Main dispatcher function to parse a supported file based on its extension.
+
+    Args:
+        file_path (str): Full path to the input file.
+
+    Returns:
+        List[Dict]: Parsed text or table data with metadata entries.
+    """
     ext = os.path.splitext(file_path)[1].lower()
+
     if ext == ".pdf":
-        return parse_pdf(file_path)
+        entries = parse_pdf(file_path)
     elif ext == ".csv":
-        return parse_csv(file_path)
+        entries = parse_csv(file_path)
     elif ext == ".pptx":
-        return parse_pptx(file_path)
+        entries = parse_pptx(file_path)
     elif ext == ".docx":
-        return parse_docx(file_path)
+        entries = parse_docx(file_path)
     elif ext in [".txt", ".md"]:
-        return parse_txt(file_path)
+        entries = parse_txt(file_path)
     else:
         raise ValueError(f"Unsupported file format: {ext}")
 
+    return entries
+
 def parse_pdf(file_path: str) -> List[Dict]:
+    """
+    Extracts non-table text and table rows from a PDF using pdfplumber.
+
+    Args:
+        file_path (str): Path to the PDF file.
+
+    Returns:
+        List[Dict]: Parsed entries with type: sentence or table_row.
+    """
     results = []
     base_name = os.path.basename(file_path)
 
@@ -64,6 +86,15 @@ def parse_pdf(file_path: str) -> List[Dict]:
     return results
 
 def parse_csv(file_path: str) -> List[Dict]:
+    """
+    Parses rows from a CSV file.
+
+    Args:
+        file_path (str): Path to the CSV file.
+
+    Returns:
+        List[Dict]: Parsed CSV rows as dictionaries.
+    """
     df = pd.read_csv(file_path)
     base_name = os.path.basename(file_path)
     results = [
@@ -78,6 +109,15 @@ def parse_csv(file_path: str) -> List[Dict]:
     return results
 
 def parse_pptx(file_path: str) -> List[Dict]:
+    """
+    Parses text from PowerPoint slides.
+
+    Args:
+        file_path (str): Path to the .pptx file.
+
+    Returns:
+        List[Dict]: Slide-wise extracted text or table entries.
+    """
     prs = Presentation(file_path)
     base_name = os.path.basename(file_path)
     results = []
@@ -125,6 +165,15 @@ def parse_pptx(file_path: str) -> List[Dict]:
     return results
 
 def parse_docx(file_path: str) -> List[Dict]:
+    """
+    Parses text from paragraphs in a .docx Word file.
+
+    Args:
+        file_path (str): Path to the .docx file.
+
+    Returns:
+        List[Dict]: Paragraph-wise extracted text.
+    """
     results = []
     base_name = os.path.basename(file_path)
     doc = Document(file_path)
@@ -163,6 +212,15 @@ def parse_docx(file_path: str) -> List[Dict]:
 
 
 def parse_txt(file_path: str) -> List[Dict]:
+    """
+    Parses text from paragraphs in a .txt file.
+
+    Args:
+        file_path (str): Path to the .txt file.
+
+    Returns:
+        List[Dict]: Paragraph-wise extracted text.
+    """
     results = []
     base_name = os.path.basename(file_path)
 
@@ -182,12 +240,31 @@ def parse_txt(file_path: str) -> List[Dict]:
     return results
 
 def table_to_kv_chunks(df: pd.DataFrame) -> List[str]:
+    """
+    Converts a DataFrame into a list of key-value formatted string chunks.
+
+    For each row in the DataFrame:
+    - Column names are treated as keys.
+    - Cell values are treated as values.
+    - Output format: "Column1: Value1; Column2: Value2; ..."
+    - Columns with "Unnamed:" are treated as value-only (no key prefix).
+
+    Args:
+        df (pd.DataFrame): Input DataFrame to convert.
+
+    Returns:
+        List[str]: List of strings where each string represents one row in key-value format.
+    """
     row_data = []
     for _, row in df.iterrows():
         kv_pairs = []
         for col in df.columns:
             col_name = str(col).strip() if col is not None else ""
-            cell_value = str(row[col]).strip() if row[col] else ""
+            val = row[col]
+            if isinstance(val, pd.Series):
+                val = val.iloc[0]  # or apply logic to join values if needed
+
+            cell_value = str(val).strip() if pd.notna(val) else ""
 
             if not col_name.startswith("Unnamed:"):
                 kv_pairs.append(f"{col_name}: {cell_value}")

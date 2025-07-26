@@ -9,6 +9,3 @@ __pycache__/
 
 # Environment variables
 .env
-
-#vscode_cache
-.vscode/
