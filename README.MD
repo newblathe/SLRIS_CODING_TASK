@@ -234,7 +234,7 @@ All agent communication follows the MCPMessage format:
 ### Setup Instructions
 ```bash
 # Clone the repository
-git clone https://github.com/newblathe/agent-docqa.git
+git clone https://github.com/newblathe/SLRIS_CODING_TASK.git
 cd agent-docqa
 
 # Install dependencies
