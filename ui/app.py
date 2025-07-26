@@ -33,14 +33,17 @@ def get_indexed_file_path(original_path: str, upload_dir: str = UPLOAD_DIR) -> s
 
     base_name = os.path.basename(original_path)
     name, ext = os.path.splitext(base_name)
-
-    counter = 1
-    while True:
-        new_name = f"{name}_{counter}{ext}"
-        new_path = os.path.join(upload_dir, new_name)
-        if not os.path.exists(new_path):
-            return new_path
-        counter += 1
+    upload_path = os.path.join(upload_dir, base_name)
+    if os.path.exists(upload_path):
+        counter = 1
+        while True:
+            new_name = f"{name}_{counter}{ext}"
+            new_path = os.path.join(upload_dir, new_name)
+            if not os.path.exists(new_path):
+                upload_path = new_path
+                break    
+            counter += 1
+    return upload_path
 
 def upload_and_ingest(files):
     """
