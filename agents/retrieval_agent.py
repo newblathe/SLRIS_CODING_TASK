@@ -98,7 +98,7 @@ class RetrievalAgent:
         )
         return MCPMessage(
             sender= "RetrievalAgent",
-            receiver= "LLMResponseAgent",
+            receiver= "CoordinatorAgent",
             type= "LLM_REQUEST",
             trace_id= message["trace_id"],
             payload= {"top_chunks": [{"text": doc, "metadata": meta} for doc, meta in zip(result["documents"][0], result["metadatas"][0])],

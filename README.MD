@@ -40,14 +40,15 @@ flowchart TD
     n1 -- Writes and runs a QUERY --> n7["Front End"]
     n7 -- Sends RETRIEVAL_REQUEST --> n8["CoordinatorAgent"]
     n8 -- Forwards RETRIEVAL_REQUEST --> n9["RetrievalAgent (Retrieves semantically related chunks from ChromaDB)"]
-    n9 -- Sends LLM_REQUEST --> n10["LLMResponseAgent (Provides answer and realted citations from the chunks)"]
-    n10 -- Sends LLM_RESPONSE --> n11["CoordinatorAgent"]
+    n10["LLMResponseAgent (Provides answer and realted citations from the chunks)"] -- Sends LLM_RESPONSE --> n11["CoordinatorAgent"]
     n11 -- Sends Answer and Citations --> n12["Front End"]
     n1 -- DELETES DOCUMENTS --> n13["Frontend"]
     n13 -- Deletes from local drive and sends DELETEFROM_DB --> n14["CoordinatorAgent"]
     n14 -- Forwards DELETEFROM_DB --> n15["RetrievalAgent (Deletes the chunks of the documents from ChromaDB)"]
     n4 -- "<span style=color:>Sends ADDTO_DB</span>" --> n16["CoordinatorAgent"]
     n16 -- "<span style=color:>Forwards ADDTO_DB</span>" --> n5["RetrievalAgent (Adds the chunks to ChromaDB)"]
+    n9 -- "<span style=color:>Sends LLM_REQUEST</span>" --> n17["CoordinatorAgent"]
+    n17 -- Forwards LLM_REQUEST --> n10
     n1@{ shape: rect}
     n14@{ shape: rect}
     n16@{ shape: rect}

@@ -30,7 +30,7 @@ class IngestionAgent:
 
         return MCPMessage(
             sender="IngestionAgent",
-            receiver="RetrievalAgent",
+            receiver="CoordinatorAgent",
             type="ADDTO_DB",
             trace_id=message["trace_id"],
             payload={"chunks": all_chunks}
