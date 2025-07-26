@@ -7,11 +7,11 @@ This project implements a modular agent-based pipeline for intelligent document 
 
 - [Architecture](#architecture)
 
-- [Files & Descriptions](#files-&-Description)
-
-- [MCP Protocol](#mcp-protocol)
+- [Files & Function Descriptions](#files-&-function-descriptions)
 
 - [Installation and Running the app](#installation-and-running-the-app)
+
+- [MCP Protocol](#mcp-protocol)
 
 - [Features](#features)
 
