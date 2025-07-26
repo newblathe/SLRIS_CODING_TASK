@@ -1,25 +1,23 @@
-# Agent-Based Document Q&A System
+# Agentic RAG Chatbot
 
 This project implements a modular agent-based pipeline for intelligent document understanding and question-answering. It supports PDF, DOCX, PPTX, CSV, and TXT/MD ingestion with persistent vector storage using ChromaDB, and returns grounded answers using LLMs via MCP (Model Communication Protocol).
 
 ## Table of Contents
-- Overview
+- [Overview](#overview)
 
-- Architecture
+- [Architecture](#architecture)
 
-- File Structure & Descriptions
+- [Files and Function Descriptions](#files-and-function-descriptions)
 
-- Features
+- [Installation and Running the app](#installation-and-running-the-app)
 
-- Installation
+- [MCP Protocol](#mcp-protocol)
 
-- Usage
+- [Features](#features)
 
-- Agent Responsibilities
+- [Future Enhancements](#future-enhancements)
 
-- MCP Protocol
-
-- Future Enhancements
+- [Demo](#demo)
 
 ## Overview
 This system allows users to upload unstructured documents through a clean Gradio UI. The documents are chunked, embedded, and indexed in ChromaDB. On querying, relevant chunks are retrieved and passed to an LLM to generate a citation-rich, context-aware answer.
@@ -54,7 +52,7 @@ flowchart TD
     n16@{ shape: rect}
 
 ```
-## Files & Function Descriptions
+## Files and Function Descriptions
 ### `app.py` - Frontend & File Control Layer
 This file defines the UI using Gradio and managesd local file storage.
 #### Key Functions:
