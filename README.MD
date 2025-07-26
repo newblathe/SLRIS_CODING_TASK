@@ -7,7 +7,7 @@ This project implements a modular agent-based pipeline for intelligent document 
 
 - [Architecture](#architecture)
 
-- [Files & Function Descriptions](#files-&-function-descriptions)
+- [Files and Function Descriptions](#files-and-function-descriptions)
 
 - [Installation and Running the app](#installation-and-running-the-app)
 
@@ -51,7 +51,7 @@ flowchart TD
     n16@{ shape: rect}
 
 ```
-## Files & Function Descriptions
+## Files and Function Descriptions
 ### `app.py` - Frontend & File Control Layer
 This file defines the UI using Gradio and managesd local file storage.
 #### Key Functions:
